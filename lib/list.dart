@@ -12,22 +12,50 @@ class list extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        decoration: BoxDecoration(),
+        height: 40,
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [Colors.white, Colors.lightGreen[100]!],
+            ),
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              color: Colors.green[400]!,
+              width: 2,
+            )),
         child: SafeArea(
-          child: ListView.builder(
+          child: ListView.separated(
             itemCount: bucketList.length,
             itemBuilder: (context, index) {
               final bucketItem = bucketList[index];
-              return ListTile(
-                leading: Icon(
-                  bucketItem.icon,
-                  size: 50,
-                ),
-                title: Text(
-                  bucketItem.title,
-                  style: TextStyle(fontSize: 40),
+              return Container(
+                height: 40.0,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Icon(
+                        bucketItem.icon,
+                        size: 28,
+                      ),
+                    ),
+                    Expanded(
+                      child: Text(
+                        bucketItem.title,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               );
+            },
+            separatorBuilder: (BuildContext context, int index) {
+              return Divider();
             },
           ),
         ),
