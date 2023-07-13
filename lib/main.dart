@@ -11,18 +11,18 @@ DB 구성
 DB name : bucketlist.db
 
 // type List table
-table 1 : typelists 
+table 1 : typelists - 설정화면에서 타입리스트를 표시
 type TEXT
 icon TEXT
 
 // bucket List table
-table 2 : bucketlists
+table 2 : bucketlists - 메인화면에서 표시되는 버킷리스트
 goal TEXT
 type TEXT
 date datetime
 memo TEXT
 */
-
+// test
 void main() {
   runApp(MyApp());
 }
