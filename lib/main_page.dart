@@ -42,59 +42,87 @@ class SecondPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: <Color>[
+                Color(0xFFFFF59D),
+                Color(0xFFAED581),
+              ],
+            ),
+          ),
+        ),
         automaticallyImplyLeading: false,
-        backgroundColor: Color.fromARGB(255, 13, 181, 58),
         elevation: 3,
         title: Text(
           "Bucket List",
           style: TextStyle(
             // backgroundColor: Color.fromARGB(255, 26, 243, 232),
-            fontSize: 40,
+            fontSize: 32,
             fontWeight: FontWeight.bold,
             color: Colors.white,
           ),
         ),
         actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => Setting_Page()),
-                  (route) => false);
-            },
-            icon: Icon(
-              Icons.settings,
-              color: Colors.black,
+          Padding(
+            padding: const EdgeInsets.only(right: 12.0),
+            child: IconButton(
+              onPressed: () {
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => Setting_Page()),
+                    (route) => false);
+              },
+              icon: Icon(
+                Icons.settings,
+                color: Colors.white,
+                size: 30,
+              ),
             ),
           ),
         ],
       ),
-      body: Column(
-        children: [
-          SizedBox(height: 20),
-          Align(
-            alignment: Alignment.topLeft,
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Text(
-                "19팀 거북이의 버킷리스트",
-                style: TextStyle(
-                  backgroundColor: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  color: Color.fromARGB(255, 8, 181, 74),
-                  fontSize: 30,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Colors.yellow[100]!, Colors.green[200]!],
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(
+              left: 20.0, right: 20.0, top: 0.0, bottom: 10.0),
+          child: Column(
+            children: [
+              SizedBox(height: 5),
+              Align(
+                alignment: Alignment.topLeft,
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Text(
+                    "19팀 거북이의 버킷리스트",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.green[400],
+                      fontSize: 20,
+                    ),
+                  ),
                 ),
               ),
-            ),
+              Divider(
+                color: Colors.green,
+                thickness: 2,
+                height: 0,
+              ),
+              SizedBox(height: 10),
+              list(),
+              SizedBox(height: 20),
+            ],
           ),
-          Divider(
-            color: Colors.grey,
-            thickness: 2,
-            height: 0,
-          ),
-          SizedBox(height: 20),
-          list(),
-        ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -102,8 +130,8 @@ class SecondPage extends StatelessWidget {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: Text('This is a pop-up dialog.'),
-                content: Text('This is the content of the pop-up dialog.'),
+                title: Text('Bucket List 추가'),
+                content: Text('Bucket List 항목에 따른 정보 (미구현...)'),
                 actions: [
                   TextButton(
                     onPressed: () {
@@ -116,7 +144,7 @@ class SecondPage extends StatelessWidget {
             },
           );
         },
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.green[600],
         elevation: 1,
         child: Icon(
           Icons.add_rounded,

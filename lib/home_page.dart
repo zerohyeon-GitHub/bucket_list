@@ -51,6 +51,7 @@ class Home_Page extends StatelessWidget {
                 width: 180,
               ),
             ),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.05),
             TextButton(
               onPressed: () {
                 // 이미지를 누르면 main_page.dart 화면으로 이동합니다.

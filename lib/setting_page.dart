@@ -398,6 +398,7 @@ class _Setting_PageState extends State<Setting_Page> {
                               Expanded(
                                 child: Text(
                                   BucketList[index]['type'],
+                                  textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.normal,

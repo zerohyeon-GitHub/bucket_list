@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: true, // 우측 상단에 debug 여부를 표시하는 것
+      debugShowCheckedModeBanner: false, // 우측 상단에 debug 여부를 표시하는 것
       title: 'bucket list',
       theme: ThemeData(
         primarySwatch: Colors.green,
