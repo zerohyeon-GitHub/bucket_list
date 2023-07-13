@@ -1,7 +1,27 @@
 import 'package:bucket_list/setting_page.dart';
 import 'package:flutter/material.dart';
+import 'DBHelper.dart';
+
+import 'package:sqflite/sqflite.dart';
 
 import 'home_page.dart';
+
+/*
+DB 구성
+DB name : bucketlist.db
+
+// type List table
+table 1 : typelists 
+type TEXT
+icon TEXT
+
+// bucket List table
+table 2 : bucketlists
+goal TEXT
+type TEXT
+date datetime
+memo TEXT
+*/
 
 void main() {
   runApp(MyApp());
@@ -31,6 +51,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  List<Map<String, dynamic>> bucket_data = [];
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -91,3 +113,4 @@ class _HomePageState extends State<HomePage> {
 //     );
 //   }
 // }
+

@@ -1,11 +1,110 @@
+import 'package:bucket_list/DBHelper.dart';
+import 'package:bucket_list/home_page.dart';
+import 'package:bucket_list/main_page.dart';
+import 'package:bucket_list/main.dart';
+import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'dart:developer';
 
-class Setting_Page extends StatelessWidget {
+import 'main.dart';
+
+class typeList {
+  final String type;
+  final String icon;
+
+  typeList(this.type, this.icon);
+}
+
+class Setting_Page extends StatefulWidget {
   const Setting_Page({super.key});
 
   @override
+  State<Setting_Page> createState() => _Setting_PageState();
+}
+
+class _Setting_PageState extends State<Setting_Page> {
+  final TextEditingController _textFieldController = TextEditingController();
+
+  List<Map<String, dynamic>> typelists = []; // type List table
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  // 데이터베이스 초기화
+  Future<Database> _initDB() async {
+    log("test log : _initDB");
+    final dbPath = await getDatabasesPath();
+    final path = join(dbPath, 'bucketlist.db');
+    return await openDatabase(
+      path,
+      version: 1,
+      onCreate: (db, version) async {
+        await db.execute('CREATE TABLE typelists(type TEXT, icon TEXT)');
+      },
+    );
+  }
+
+  // 데이터 로딩
+  Future<void> _loadData() async {
+    log("test log : _loadData");
+    final db = await _initDB();
+    final dataList = await db.query('typelists');
+    setState(() {
+      typelists = dataList;
+    });
+  }
+
+  // 데이터 추가
+  Future<void> _addData(String type, String icon) async {
+    log("test log : _addData");
+    final db = await _initDB();
+    await db.insert(
+      'typelists',
+      {
+        'type': type,
+        'icon': icon,
+      },
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+    _textFieldController.clear();
+    _loadData();
+  }
+
+  // 데이터 수정
+  Future<void> _editData(String type, String icon) async {
+    final db = await _initDB();
+    await db.update(
+      'typelists',
+      {
+        'type': type,
+        'icon': icon,
+      },
+      where: 'type = ?',
+      whereArgs: [type],
+    );
+    _loadData();
+  }
+
+  // 데이터 삭제
+  Future<void> _deleteData(String type) async {
+    final db = await _initDB();
+    await db.delete(
+      'typelists',
+      where: 'type = ?',
+      whereArgs: [type],
+    );
+    _loadData();
+  }
+
   Widget build(BuildContext context) {
+    DBHelper helper = DBHelper();
+
     // type 목록
     List<Map<String, dynamic>> BucketList = [
       {
@@ -15,41 +114,6 @@ class Setting_Page extends StatelessWidget {
       {
         "type": "공부",
         "icon": Icons.book,
-      },
-    ];
-
-// 여행 목록
-    List<Map<String, dynamic>> BucketList_travel = [
-      // type 여행
-      {
-        "goal": "일본가기",
-        "date": "",
-        "memo": "",
-      },
-      {
-        "goal": "중국가기",
-        "date": "",
-        "memo": "",
-      },
-      {
-        "goal": "중국가기",
-        "date": "",
-        "memo": "",
-      },
-    ];
-
-    // 저축 목록
-    List<Map<String, dynamic>> BucketList_money = [
-      // type 여행
-      {
-        "goal": "일본가기",
-        "date": "",
-        "memo": "",
-      },
-      {
-        "goal": "중국가기",
-        "date": "",
-        "memo": "",
       },
     ];
 
@@ -77,7 +141,16 @@ class Setting_Page extends StatelessWidget {
           child: Row(
             children: [
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  log("home icon select : db okay?");
+                  List<String> test_type = ["여행", "공부", "저축", "게임", "독서"];
+                  List<String> test_icon = ["여행", "공부", "저축", "게임", "독서"];
+                  _addData("test type", "test icon");
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SecondPage()),
+                  );
+                },
                 icon: Icon(
                   Icons.home,
                   color: Colors.white,
@@ -186,7 +259,62 @@ class Setting_Page extends StatelessWidget {
               height: 10.0,
             ),
             Expanded(
-              flex: 9,
+              child: Container(
+                height: 40.0,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    topRight: Radius.circular(10),
+                  ),
+                  border: Border.all(
+                    color: Colors.black,
+                    width: 1,
+                  ),
+                  // border: Border(
+                  //   left: BorderSide(
+                  //     color: Colors.black,
+                  //     width: 1.0,
+                  //   ),
+                  //   right: BorderSide(
+                  //     color: Colors.black,
+                  //     width: 1.0,
+                  //   ),
+                  //   top: BorderSide(
+                  //     color: Colors.black,
+                  //     width: 1.0,
+                  //   ),
+                  // ),
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'Type',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 15,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Text(
+                        '완성도',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 15,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 8,
               child: Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
@@ -266,27 +394,96 @@ class Setting_Page extends StatelessWidget {
               height: 10.0,
             ),
             Expanded(
-              flex: 9,
+              child: Container(
+                height: 40.0,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    topRight: Radius.circular(10),
+                  ),
+                  border: Border.all(
+                    color: Colors.black,
+                    width: 1,
+                  ),
+                  // border: Border(
+                  //   left: BorderSide(
+                  //     color: Colors.black,
+                  //     width: 1.0,
+                  //   ),
+                  //   right: BorderSide(
+                  //     color: Colors.black,
+                  //     width: 1.0,
+                  //   ),
+                  //   top: BorderSide(
+                  //     color: Colors.black,
+                  //     width: 1.0,
+                  //   ),
+                  // ),
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'Type',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 15,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Text(
+                        '완성도',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 15,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 8,
               child: Container(
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(
-                      color: Colors.black,
-                      width: 1,
-                    )),
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(10),
+                    bottomRight: Radius.circular(10),
+                  ),
+                  border: Border.all(
+                    color: Colors.black,
+                    width: 1,
+                  ),
+                ),
                 child: ListView.separated(
-                  itemCount: BucketList.length,
+                  itemCount: typelists.length,
                   itemBuilder: (context, index) {
+                    log("test log : " + typelists.length.toString());
                     return Container(
                       height: 40.0,
                       child: Row(
                         children: [
                           Expanded(
-                            child: Icon(BucketList[index]['icon']),
+                            child: Text(
+                              typelists[index]['type'],
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.normal,
+                                fontSize: 15,
+                              ),
+                            ),
                           ),
                           Expanded(
                             child: Text(
-                              BucketList[index]['type'],
+                              typelists[index]['icon'],
+                              textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.normal,
