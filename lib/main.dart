@@ -64,7 +64,8 @@ class _HomePageState extends State<HomePage> {
           children: [
             TabBarView(
               // physics는 app에서 슬라이드를 하여 옆페이지로 넘어가는 것을 허용할 것인지 말것인지 결정
-              // physics: NeverScrollableScrollPhysics(), // NeverScrollableScrollPhysics()는 비활성화
+              physics:
+                  NeverScrollableScrollPhysics(), // NeverScrollableScrollPhysics()는 비활성화
               // TabBar View 내 Tab 설정
               children: [
                 Home_Page(),
