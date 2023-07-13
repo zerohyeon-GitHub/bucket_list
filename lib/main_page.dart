@@ -36,6 +36,8 @@ List<BucketItem> bucketList = [
 class SecondPage extends StatelessWidget {
   const SecondPage({super.key});
 
+  static String routeName = "/main_page";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,10 +57,10 @@ class SecondPage extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Setting_Page()),
-              );
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => Setting_Page()),
+                  (route) => false);
             },
             icon: Icon(
               Icons.settings,
