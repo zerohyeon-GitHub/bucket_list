@@ -1,3 +1,4 @@
+import 'package:bucket_list/main_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -77,7 +78,12 @@ class Setting_Page extends StatelessWidget {
           child: Row(
             children: [
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SecondPage()),
+                  );
+                },
                 icon: Icon(
                   Icons.home,
                   color: Colors.white,
