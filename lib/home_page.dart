@@ -53,14 +53,22 @@ class Home_Page extends StatelessWidget {
               ),
             ),
             TextButton(
-                onPressed: () {
-                  // 이미지를 누르면 main_page.dart 화면으로 이동합니다.
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => SecondPage()),
-                  );
-                },
-                child: Text('이동'))
+              onPressed: () {
+                // 이미지를 누르면 main_page.dart 화면으로 이동합니다.
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SecondPage()),
+                );
+              },
+              child: Text(
+                '시작하기',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            )
           ],
         ),
       ),
